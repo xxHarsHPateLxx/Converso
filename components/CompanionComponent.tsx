@@ -44,12 +44,12 @@ const CompanionComponent = ({ subject, name, topic, companionId, userName, userI
         }
 
         const onMessage = (message: Message) => {
-            if(message.type === 'transcript' && message.transcriptType === 'final') {
+            if (message.type === 'transcript' && message.transcriptType === 'final') {
                 const newMessage = { role: message.role, content: message.transcript };
 
                 setMessages((prev) => [newMessage, ...prev]);
             }
-         }
+        }
 
         const onSpeechStart = () => setIsSpeaking(true);
 
@@ -88,12 +88,14 @@ const CompanionComponent = ({ subject, name, topic, companionId, userName, userI
             variableValues: {
                 subject, topic, style
             },
-            clientMessages: ['transcript'],
-            serverMessages: [],            
+            clientMessages: ['transcript'] as const,
+            serverMessages: [] as const,
+
         }
 
-        
+        // @ts-expect-error assistantOverrides type is narrower than vapi.start expects
         vapi.start(configureAssistant(voice, style), assistantOverrides)
+
     }
 
     const handleDisconnect = async () => {
@@ -143,7 +145,7 @@ const CompanionComponent = ({ subject, name, topic, companionId, userName, userI
 
                     <button className={cn('rounded-lg py-2 cursor-pointer transition-colors w-full text-white', callStatus === CallStatus.ACTIVE ? 'bg-red-700' : 'bg-primary', callStatus === CallStatus.ACTIVE && 'animate-pulse')}
                         onClick={callStatus === CallStatus.ACTIVE ? handleDisconnect : handleCall}
-                        >
+                    >
                         {callStatus === CallStatus.ACTIVE ? 'End Session' : callStatus === CallStatus.CONNECTING ? 'Connecting...' : 'Start Session'}
                     </button>
 
@@ -154,18 +156,18 @@ const CompanionComponent = ({ subject, name, topic, companionId, userName, userI
             <section className="transcript">
                 <div className="transcript-message no-scrollbar">
                     {messages.map((message, index) => {
-                        if(message.role === 'assistant') {
+                        if (message.role === 'assistant') {
                             return (
                                 <p key={index} className="max-sm:text-sm">
                                     {
                                         name
                                             .split(' ')[0]
-                                            .replace('/[.,]/g, ','')
+                                            .replace('/[.,]/g, ', '')
                                     }: {message.content}
                                 </p>
                             )
                         } else {
-                           return <p key={index} className="text-primary max-sm:text-sm">
+                            return <p key={index} className="text-primary max-sm:text-sm">
                                 {userName}: {message.content}
                             </p>
                         }
