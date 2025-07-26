@@ -87,7 +87,19 @@ const CompanionComponent = ({ subject, name, topic, companionId, userName, userI
         const assistantOverrides = {
             variableValues: { subject, topic, style },
             clientMessages: ['transcript'],
-            serverMessages: []
+            serverMessages: [] as Array<
+                "conversation-update" |
+                "function-call" |
+                "function-call-result" |
+                "hang" |
+                "language-changed" |
+                "metadata" |
+                "model-output" |
+                "speech-update" |
+                "status-update" |
+                "transcript"
+            >,
+
         };
 
         // @ts-expect-error
