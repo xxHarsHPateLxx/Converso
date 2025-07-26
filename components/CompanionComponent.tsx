@@ -85,15 +85,12 @@ const CompanionComponent = ({ subject, name, topic, companionId, userName, userI
         setCallStatus(CallStatus.CONNECTING);
 
         const assistantOverrides = {
-            variableValues: {
-                subject, topic, style
-            },
-            clientMessages: ['transcript'] as const,
-            serverMessages: [] as const,
+            variableValues: { subject, topic, style },
+            clientMessages: ['transcript'],
+            serverMessages: []
+        };
 
-        }
-
-        // @ts-expect-error assistantOverrides type is narrower than vapi.start expects
+        // @ts-expect-error
         vapi.start(configureAssistant(voice, style), assistantOverrides)
 
     }
