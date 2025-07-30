@@ -54,7 +54,9 @@ export const configureAssistant = (voice: string, style: string) => {
         },
       ],
     },
+    // @ts-ignore
     clientMessages: [],
+    // @ts-ignore
     serverMessages: [],
   };
   
